@@ -7,11 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════
-   LOVEBOX — LUXURY SONG REQUEST APP
-   Design: Dark navy + gold candlelight theme
-   ═══════════════════════════════════════════ */
-
 :root {
   --gold: #c9a96e;
   --gold-light: #e0c992;
@@ -40,9 +35,7 @@
   --shadow: 0 4px 24px rgba(0,0,0,0.4);
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 body {
   font-family: var(--font-body);
   background: var(--bg-deep);
@@ -50,674 +43,178 @@ body {
   min-height: 100dvh;
   overflow-x: hidden;
 }
-
-/* Noise texture overlay */
 body::before {
   content: '';
-  position: fixed;
-  inset: 0;
-  opacity: 0.03;
+  position: fixed; inset: 0; opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 256px;
-  pointer-events: none;
-  z-index: 9999;
+  background-size: 256px; pointer-events: none; z-index: 9999;
 }
-
-/* Ambient glow */
 body::after {
   content: '';
-  position: fixed;
-  top: -30%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 600px;
-  height: 400px;
+  position: fixed; top: -30%; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 400px;
   background: radial-gradient(ellipse, rgba(201,169,110,0.06) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
+  pointer-events: none; z-index: 0;
 }
-
 .app {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 0 16px 100px;
-  position: relative;
-  z-index: 1;
+  max-width: 500px; margin: 0 auto; padding: 0 16px 100px;
+  position: relative; z-index: 1;
 }
-
-/* ─── LOADING SCREEN ─── */
 #loading-screen {
-  position: fixed;
-  inset: 0;
-  background: var(--bg-deep);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
+  position: fixed; inset: 0; background: var(--bg-deep);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  z-index: 10000; transition: opacity 0.6s ease, visibility 0.6s ease;
 }
 #loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 #loading-screen .brand { font-family: var(--font-display); font-size: 2.4rem; font-style: italic; color: var(--gold); letter-spacing: 2px; }
 #loading-screen .dots { margin-top: 20px; display: flex; gap: 6px; }
-#loading-screen .dots span {
-  width: 6px; height: 6px; border-radius: 50%; background: var(--gold-dim);
-  animation: pulse-dot 1.4s infinite ease-in-out;
-}
+#loading-screen .dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--gold-dim); animation: pulse-dot 1.4s infinite ease-in-out; }
 #loading-screen .dots span:nth-child(2) { animation-delay: 0.2s; }
 #loading-screen .dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes pulse-dot { 0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); } 40% { opacity: 1; transform: scale(1.2); } }
-
-/* ─── CONFIG WARNING ─── */
-.config-warning {
-  background: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #fca5a5;
-  padding: 10px 14px;
-  border-radius: var(--radius-sm);
-  font-size: 0.78rem;
-  margin-bottom: 16px;
-  line-height: 1.5;
-}
-
-/* ─── HEADER ─── */
-.header {
-  text-align: center;
-  padding: 28px 0 20px;
-  position: relative;
-}
-.header-brand {
-  font-family: var(--font-display);
-  font-size: 2.2rem;
-  font-style: italic;
-  font-weight: 600;
-  color: var(--gold);
-  letter-spacing: 1.5px;
-  text-shadow: 0 0 40px rgba(201,169,110,0.2);
-}
-.header-sub {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-top: 4px;
-  font-weight: 500;
-}
-/* Hidden musician login trigger */
-.header-secret {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 40px;
-  height: 40px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  opacity: 0.08;
-  color: var(--gold-dim);
-  font-size: 16px;
-  border-radius: 50%;
-  transition: opacity var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  -webkit-tap-highlight-color: transparent;
-}
+@keyframes pulse-dot { 0%,80%,100% { opacity:0.3; transform:scale(0.8); } 40% { opacity:1; transform:scale(1.2); } }
+.config-warning { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.78rem; margin-bottom: 16px; line-height: 1.5; }
+.header { text-align: center; padding: 28px 0 20px; position: relative; }
+.header-brand { font-family: var(--font-display); font-size: 2.2rem; font-style: italic; font-weight: 600; color: var(--gold); letter-spacing: 1.5px; text-shadow: 0 0 40px rgba(201,169,110,0.2); }
+.header-sub { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; font-weight: 500; }
+.header-secret { position: absolute; top: 8px; right: 8px; width: 40px; height: 40px; background: none; border: none; cursor: pointer; opacity: 0.08; color: var(--gold-dim); font-size: 16px; border-radius: 50%; transition: opacity var(--transition); display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
 .header-secret:hover { opacity: 0.25; }
 .header-secret:active { opacity: 0.5; }
-
-/* ─── SONG ROWS (multi-song) ─── */
-.song-row {
-  background: var(--bg-input);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 12px;
-  margin-bottom: 10px;
-  position: relative;
-  animation: fade-slide-in 0.3s ease;
-}
-.song-row-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-.song-row-label {
-  font-size: 0.68rem;
-  color: var(--gold-dim);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-weight: 700;
-}
-.song-row-remove {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  font-size: 18px;
-  padding: 0 4px;
-  line-height: 1;
-  transition: color var(--transition);
-}
-.song-row-remove:hover { color: var(--danger); }
-.song-row .form-input { margin-bottom: 6px; }
-.song-row .form-input:last-child { margin-bottom: 0; }
-
-.add-song-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 100%;
-  padding: 10px;
-  border: 1px dashed var(--border);
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--text-secondary);
-  font-family: var(--font-body);
-  font-size: 0.78rem;
-  cursor: pointer;
-  transition: all var(--transition);
-  margin-bottom: 14px;
-}
-.add-song-btn:hover { border-color: var(--gold-dim); color: var(--gold); background: var(--gold-glow); }
-.add-song-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
-/* Songs in queue */
-.queue-songs-list { display: flex; flex-direction: column; gap: 2px; }
-.queue-songs-list .queue-song-item { display: flex; align-items: baseline; gap: 6px; }
-.queue-songs-list .queue-song-num { color: var(--text-muted); font-size: 0.7rem; min-width: 14px; }
-
-/* ─── BAND STATUS ─── */
-.band-status {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 16px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-.band-status .dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  animation: glow-pulse 2s infinite;
-}
+.band-status { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; }
+.band-status .dot { width: 8px; height: 8px; border-radius: 50%; animation: glow-pulse 2s infinite; }
 .band-status.on-stage .dot { background: var(--status-gas); box-shadow: 0 0 8px rgba(74,222,128,0.5); }
 .band-status.on-stage .label { color: var(--status-gas); }
 .band-status.on-break .dot { background: var(--gold); box-shadow: 0 0 8px var(--gold-glow); }
 .band-status.on-break .label { color: var(--gold); }
-@keyframes glow-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-
-/* ─── BROADCAST BANNER ─── */
-.broadcast {
-  background: linear-gradient(135deg, rgba(201,169,110,0.1), rgba(201,169,110,0.05));
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 12px 36px 12px 14px;
-  margin-bottom: 16px;
-  font-size: 0.82rem;
-  color: var(--gold-light);
-  position: relative;
-  animation: fade-slide-in 0.4s ease;
-  line-height: 1.5;
-}
-.broadcast .dismiss {
-  position: absolute; top: 8px; right: 8px;
-  background: none; border: none; color: var(--text-muted); cursor: pointer;
-  font-size: 16px; padding: 4px; line-height: 1;
-}
+@keyframes glow-pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+.broadcast { background: linear-gradient(135deg, rgba(201,169,110,0.1), rgba(201,169,110,0.05)); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 36px 12px 14px; margin-bottom: 16px; font-size: 0.82rem; color: var(--gold-light); position: relative; animation: fade-slide-in 0.4s ease; line-height: 1.5; }
+.broadcast .dismiss { position: absolute; top: 8px; right: 8px; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; padding: 4px; line-height: 1; }
 .broadcast .dismiss:hover { color: var(--gold); }
 .broadcast.hidden { display: none; }
-
-/* ─── FORMS & INPUTS ─── */
-.form-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  margin-bottom: 24px;
-  box-shadow: var(--shadow);
-}
-.form-title {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  font-style: italic;
-  color: var(--gold);
-  margin-bottom: 16px;
-}
+.form-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 24px; box-shadow: var(--shadow); }
+.form-title { font-family: var(--font-display); font-size: 1.3rem; font-style: italic; color: var(--gold); margin-bottom: 16px; }
 .form-group { margin-bottom: 14px; }
 .form-group:last-child { margin-bottom: 0; }
-.form-label {
-  display: block;
-  font-size: 0.72rem;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-bottom: 6px;
-  font-weight: 600;
-}
-.form-label .optional {
-  color: var(--text-muted);
-  text-transform: none;
-  letter-spacing: 0;
-  font-weight: 400;
-  font-size: 0.7rem;
-}
-.form-input, .form-textarea {
-  width: 100%;
-  padding: 11px 14px;
-  background: var(--bg-input);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  transition: border-color var(--transition), box-shadow var(--transition);
-  outline: none;
-}
-.form-input:focus, .form-textarea:focus {
-  border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px var(--gold-glow);
-}
+.form-label { display: block; font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; font-weight: 600; }
+.form-label .optional { color: var(--text-muted); text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 0.7rem; }
+.form-input, .form-textarea { width: 100%; padding: 11px 14px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-family: var(--font-body); font-size: 0.9rem; transition: border-color var(--transition), box-shadow var(--transition); outline: none; }
+.form-input:focus, .form-textarea:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px var(--gold-glow); }
 .form-input::placeholder, .form-textarea::placeholder { color: var(--text-muted); }
 .form-textarea { resize: vertical; min-height: 70px; }
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border: none;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition);
-  letter-spacing: 0.5px;
-}
-.btn-primary {
-  background: linear-gradient(135deg, var(--gold), var(--gold-dim));
-  color: var(--bg-deep);
-  width: 100%;
-}
+.form-select { width: 100%; padding: 11px 14px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-family: var(--font-body); font-size: 0.9rem; outline: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%238a8678'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+.form-select:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px var(--gold-glow); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border: none; border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all var(--transition); letter-spacing: 0.5px; }
+.btn-primary { background: linear-gradient(135deg, var(--gold), var(--gold-dim)); color: var(--bg-deep); width: 100%; }
 .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 4px 16px var(--gold-glow-strong); }
 .btn-primary:active { transform: translateY(0); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; filter: none; }
-
-.btn-outline {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--gold);
-}
+.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--gold); }
 .btn-outline:hover { border-color: var(--gold-dim); background: var(--gold-glow); }
-
 .btn-sm { padding: 6px 12px; font-size: 0.72rem; }
 .btn-xs { padding: 4px 8px; font-size: 0.68rem; border-radius: 4px; }
-
 .btn-danger { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
 .btn-danger:hover { background: rgba(239,68,68,0.25); }
-
 .btn-gas { background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.3); color: #4ade80; }
 .btn-gas:hover { background: rgba(74,222,128,0.25); }
-
 .btn-done { background: rgba(100,116,139,0.15); border: 1px solid rgba(100,116,139,0.3); color: #94a3b8; }
 .btn-done:hover { background: rgba(100,116,139,0.25); }
-
-/* ─── SUCCESS STATE ─── */
-.success-state {
-  text-align: center;
-  padding: 24px 0;
-  animation: fade-slide-in 0.5s ease;
-}
-.success-icon {
-  width: 56px; height: 56px;
-  border-radius: 50%;
-  background: rgba(74,222,128,0.12);
-  border: 2px solid rgba(74,222,128,0.3);
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 14px;
-  font-size: 24px;
-  color: #4ade80;
-}
-.success-title {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-style: italic;
-  color: var(--gold);
-  margin-bottom: 6px;
-}
+.song-row { background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 10px; position: relative; animation: fade-slide-in 0.3s ease; }
+.song-row-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.song-row-label { font-size: 0.68rem; color: var(--gold-dim); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
+.song-row-remove { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; padding: 0 4px; line-height: 1; transition: color var(--transition); }
+.song-row-remove:hover { color: var(--danger); }
+.song-row .form-input { margin-bottom: 6px; }
+.song-row .form-input:last-child { margin-bottom: 0; }
+.add-song-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 10px; border: 1px dashed var(--border); border-radius: var(--radius-sm); background: transparent; color: var(--text-secondary); font-family: var(--font-body); font-size: 0.78rem; cursor: pointer; transition: all var(--transition); margin-bottom: 14px; }
+.add-song-btn:hover { border-color: var(--gold-dim); color: var(--gold); background: var(--gold-glow); }
+.add-song-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.success-state { text-align: center; padding: 24px 0; animation: fade-slide-in 0.5s ease; }
+.success-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(74,222,128,0.12); border: 2px solid rgba(74,222,128,0.3); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; font-size: 24px; color: #4ade80; }
+.success-title { font-family: var(--font-display); font-size: 1.4rem; font-style: italic; color: var(--gold); margin-bottom: 6px; }
 .success-sub { font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 18px; }
-
-/* ─── QUEUE ─── */
-.section-title {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-style: italic;
-  color: var(--gold);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.section-title .count {
-  font-family: var(--font-body);
-  font-size: 0.68rem;
-  font-style: normal;
-  background: var(--gold-glow);
-  color: var(--gold);
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-weight: 600;
-}
-
+.section-title { font-family: var(--font-display); font-size: 1.2rem; font-style: italic; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.section-title .count { font-family: var(--font-body); font-size: 0.68rem; font-style: normal; background: var(--gold-glow); color: var(--gold); padding: 2px 8px; border-radius: 10px; font-weight: 600; }
 .queue-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
-
-.queue-item {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px;
-  animation: fade-slide-in 0.4s ease;
-  transition: background var(--transition), border-color var(--transition);
-}
+.queue-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; animation: fade-slide-in 0.4s ease; transition: background var(--transition), border-color var(--transition), opacity var(--transition); }
 .queue-item:hover { background: var(--bg-card-hover); }
 .queue-item.is-gas { border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.04); }
-.queue-item.is-skip { border-color: rgba(239,68,68,0.2); opacity: 0.5; }
-
+.queue-item.is-done { opacity: 0.45; }
 .queue-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
-.queue-song {
-  font-weight: 600;
-  font-size: 0.92rem;
-  color: var(--text-primary);
-  flex: 1;
-  margin-right: 8px;
-}
+.queue-song { font-weight: 600; font-size: 0.92rem; color: var(--text-primary); flex: 1; margin-right: 8px; }
 .queue-artist { font-size: 0.78rem; color: var(--text-secondary); }
 .queue-requester { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; }
-.queue-dedication {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  font-style: italic;
-  margin-top: 6px;
-  padding-top: 6px;
-  border-top: 1px solid var(--border);
-  line-height: 1.4;
-}
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  flex-shrink: 0;
-}
+.queue-dedication { font-size: 0.75rem; color: var(--text-secondary); font-style: italic; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); line-height: 1.4; }
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; flex-shrink: 0; }
 .badge-waiting { background: rgba(201,169,110,0.12); color: var(--gold); }
 .badge-gas { background: rgba(74,222,128,0.15); color: #4ade80; }
-.badge-skip { background: rgba(239,68,68,0.12); color: #ef4444; }
-
-/* Queue empty state */
-.queue-empty {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--text-muted);
-}
+.badge-done { background: rgba(100,116,139,0.15); color: #94a3b8; }
+.queue-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); }
 .queue-empty-icon { font-size: 2rem; margin-bottom: 10px; opacity: 0.5; }
 .queue-empty-text { font-family: var(--font-display); font-style: italic; font-size: 1.1rem; color: var(--text-secondary); }
 .queue-empty-sub { font-size: 0.75rem; margin-top: 6px; }
-
-/* ─── MUSICIAN PANEL ─── */
-.musician-section {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 16px;
-}
-.musician-section-title {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  font-style: italic;
-  color: var(--gold);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.musician-actions {
-  display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;
-}
-
-.toggle-btn {
-  padding: 10px 20px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--bg-input);
-  color: var(--text-secondary);
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition);
-  flex: 1;
-  text-align: center;
-}
-.toggle-btn.active {
-  border-color: var(--gold-dim);
-  background: var(--gold-glow);
-  color: var(--gold);
-}
+.musician-section { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; }
+.musician-section-title { font-family: var(--font-display); font-size: 1rem; font-style: italic; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.musician-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.toggle-btn { padding: 10px 20px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg-input); color: var(--text-secondary); font-family: var(--font-body); font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all var(--transition); flex: 1; text-align: center; }
+.toggle-btn.active { border-color: var(--gold-dim); background: var(--gold-glow); color: var(--gold); }
 .toggle-btn:hover { border-color: var(--gold-dim); }
-
-/* Session tabs */
 .session-tabs { display: flex; gap: 4px; margin-bottom: 12px; }
-.session-tab {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid var(--border);
-  background: var(--bg-input);
-  color: var(--text-muted);
-  border-radius: var(--radius-sm);
-  font-size: 0.72rem;
-  font-weight: 600;
-  cursor: pointer;
-  text-align: center;
-  transition: all var(--transition);
-}
+.session-tab { flex: 1; padding: 8px; border: 1px solid var(--border); background: var(--bg-input); color: var(--text-muted); border-radius: var(--radius-sm); font-size: 0.72rem; font-weight: 600; cursor: pointer; text-align: center; transition: all var(--transition); }
 .session-tab.active { border-color: var(--gold-dim); background: var(--gold-glow); color: var(--gold); }
-
-.setlist-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 10px;
-  background: var(--bg-input);
-  border-radius: var(--radius-sm);
-  margin-bottom: 6px;
-  font-size: 0.82rem;
-  animation: fade-slide-in 0.3s ease;
-}
-.setlist-item .song-info { flex: 1; }
-.setlist-item .song-name { color: var(--text-primary); font-weight: 500; }
-.setlist-item .song-artist { color: var(--text-muted); font-size: 0.72rem; }
-.setlist-item .remove-btn {
-  background: none; border: none; color: var(--text-muted); cursor: pointer;
-  font-size: 16px; padding: 4px; transition: color var(--transition);
-}
-.setlist-item .remove-btn:hover { color: var(--danger); }
-
-.add-setlist-row { display: flex; gap: 6px; margin-top: 8px; }
-.add-setlist-row input { flex: 1; }
-.add-setlist-row .form-input { padding: 8px 10px; font-size: 0.8rem; }
-
-/* ─── MODAL ─── */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.7);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 5000;
-  animation: fade-in 0.2s ease;
-  padding: 20px;
-}
+.setlist-item, .songlist-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: var(--bg-input); border-radius: var(--radius-sm); margin-bottom: 6px; font-size: 0.82rem; animation: fade-slide-in 0.3s ease; }
+.setlist-item .song-info, .songlist-item .song-info { flex: 1; min-width: 0; }
+.setlist-item .song-name, .songlist-item .song-name { color: var(--text-primary); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.setlist-item .song-artist, .songlist-item .song-artist { color: var(--text-muted); font-size: 0.72rem; }
+.song-key { background: rgba(201,169,110,0.12); color: var(--gold); padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; margin-left: 8px; letter-spacing: 0.5px; flex-shrink: 0; }
+.setlist-item .remove-btn, .songlist-item .remove-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; padding: 4px; transition: color var(--transition); margin-left: 6px; flex-shrink: 0; }
+.setlist-item .remove-btn:hover, .songlist-item .remove-btn:hover { color: var(--danger); }
+.add-row { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.add-row input, .add-row select { flex: 1; min-width: 0; }
+.add-row .form-input { padding: 8px 10px; font-size: 0.8rem; }
+.add-row .form-select { padding: 8px 10px; font-size: 0.8rem; }
+.song-picker-dropdown { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); max-height: 180px; overflow-y: auto; margin-top: 4px; }
+.song-picker-item { padding: 8px 12px; cursor: pointer; font-size: 0.8rem; transition: background var(--transition); display: flex; justify-content: space-between; align-items: center; }
+.song-picker-item:hover { background: var(--gold-glow); }
+.song-picker-item .pick-name { color: var(--text-primary); }
+.song-picker-item .pick-artist { color: var(--text-muted); font-size: 0.72rem; margin-left: 6px; }
+.song-picker-item .pick-key { color: var(--gold-dim); font-size: 0.65rem; }
+.logout-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.logout-row .role-badge { font-size: 0.7rem; color: var(--gold); background: var(--gold-glow); padding: 4px 12px; border-radius: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 5000; animation: fade-in 0.2s ease; padding: 20px; }
 .modal-overlay.hidden { display: none; }
-.modal {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 28px 24px;
-  width: 100%;
-  max-width: 360px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-  animation: modal-in 0.3s ease;
-}
-.modal-title {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-style: italic;
-  color: var(--gold);
-  margin-bottom: 16px;
-  text-align: center;
-}
+.modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 24px; width: 100%; max-width: 360px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); animation: modal-in 0.3s ease; }
+.modal-title { font-family: var(--font-display); font-size: 1.4rem; font-style: italic; color: var(--gold); margin-bottom: 16px; text-align: center; }
 .modal .form-group { margin-bottom: 14px; }
 .modal .error-text { color: var(--danger); font-size: 0.75rem; margin-top: 6px; }
-
-/* Quick add modal */
 .quick-add-sessions { display: flex; flex-direction: column; gap: 6px; }
 .quick-add-sessions .btn { justify-content: flex-start; }
-
-/* ─── FOOTER ─── */
-.footer {
-  padding: 20px 0;
-  text-align: center;
-  border-top: 1px solid var(--border);
-  margin-top: 20px;
-}
-.tip-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 28px;
-  background: linear-gradient(135deg, var(--gold), var(--gold-dim));
-  color: var(--bg-deep);
-  border: none;
-  border-radius: 50px;
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all var(--transition);
-  letter-spacing: 0.5px;
-}
+.footer { padding: 20px 0; text-align: center; border-top: 1px solid var(--border); margin-top: 20px; }
+.tip-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; background: linear-gradient(135deg, var(--gold), var(--gold-dim)); color: var(--bg-deep); border: none; border-radius: 50px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 700; cursor: pointer; text-decoration: none; transition: all var(--transition); letter-spacing: 0.5px; }
 .tip-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--gold-glow-strong); }
-
-.social-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 14px;
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 0.75rem;
-  transition: color var(--transition);
-}
+.social-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; color: var(--text-muted); text-decoration: none; font-size: 0.75rem; transition: color var(--transition); }
 .social-link:hover { color: var(--gold); }
 .social-link svg { width: 16px; height: 16px; }
-
-.footer-copy {
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  margin-top: 14px;
-  opacity: 0.5;
-}
-
-/* ─── TOAST ─── */
-.toast-container {
-  position: fixed;
-  top: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9000;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 90%;
-  max-width: 400px;
-}
-.toast {
-  padding: 12px 16px;
-  border-radius: var(--radius-sm);
-  font-size: 0.8rem;
-  font-weight: 500;
-  animation: toast-in 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-}
+.footer-copy { font-size: 0.65rem; color: var(--text-muted); margin-top: 14px; opacity: 0.5; }
+.toast-container { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 9000; display: flex; flex-direction: column; gap: 8px; width: 90%; max-width: 400px; }
+.toast { padding: 12px 16px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 500; animation: toast-in 0.3s ease; display: flex; align-items: center; gap: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
 .toast-success { background: #14532d; color: #bbf7d0; border: 1px solid rgba(74,222,128,0.3); }
 .toast-error { background: #7f1d1d; color: #fecaca; border: 1px solid rgba(239,68,68,0.3); }
 .toast-info { background: #1e293b; color: var(--gold-light); border: 1px solid var(--border); }
 .toast.removing { animation: toast-out 0.3s ease forwards; }
-
-/* ─── ANIMATIONS ─── */
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fade-slide-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes modal-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 @keyframes toast-in { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes toast-out { from { opacity: 1; } to { opacity: 0; transform: translateY(-10px); } }
-
-/* ─── UTILITY ─── */
 .hidden { display: none !important; }
 .mt-8 { margin-top: 8px; }
 .mt-12 { margin-top: 12px; }
-.mb-16 { margin-bottom: 16px; }
-.text-center { text-align: center; }
-
-/* Musician logout */
-.logout-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-.logout-row .role-badge {
-  font-size: 0.7rem;
-  color: var(--gold);
-  background: var(--gold-glow);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* Divider */
-.divider {
-  height: 1px;
-  background: var(--border);
-  margin: 20px 0;
-}
 </style>
 </head>
 <body>
-
-<!-- LOADING SCREEN -->
 <div id="loading-screen">
   <div class="brand">Lovebox</div>
   <div class="dots"><span></span><span></span><span></span></div>
 </div>
-
-<!-- TOAST CONTAINER -->
 <div class="toast-container" id="toast-container"></div>
 
 <!-- LOGIN MODAL -->
@@ -734,11 +231,19 @@ body::after {
   </div>
 </div>
 
-<!-- QUICK ADD TO SETLIST MODAL -->
+<!-- QUICK ADD MODAL -->
 <div class="modal-overlay hidden" id="quickadd-modal">
   <div class="modal">
     <div class="modal-title">Add to Setlist</div>
     <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:14px;text-align:center;" id="quickadd-song-label">—</p>
+    <div class="form-group">
+      <label class="form-label">Kunci Dasar</label>
+      <select class="form-select" id="quickadd-key">
+        <option value="">— Pilih —</option>
+        <option>C</option><option>C#</option><option>D</option><option>D#</option><option>E</option><option>F</option><option>F#</option><option>G</option><option>G#</option><option>A</option><option>A#</option><option>B</option>
+        <option>Cm</option><option>C#m</option><option>Dm</option><option>D#m</option><option>Em</option><option>Fm</option><option>F#m</option><option>Gm</option><option>G#m</option><option>Am</option><option>A#m</option><option>Bm</option>
+      </select>
+    </div>
     <div class="quick-add-sessions">
       <button class="btn btn-outline" onclick="quickAddToSession(1)">→ Sesi 1</button>
       <button class="btn btn-outline" onclick="quickAddToSession(2)">→ Sesi 2</button>
@@ -748,28 +253,20 @@ body::after {
   </div>
 </div>
 
-<!-- APP -->
 <div class="app">
+  <div class="config-warning hidden" id="config-warning">⚠️ Firebase belum dikonfigurasi.</div>
 
-  <!-- CONFIG WARNING (shown if Firebase not configured) -->
-  <div class="config-warning hidden" id="config-warning">
-    ⚠️ Firebase belum dikonfigurasi. App berjalan dalam mode preview — data tidak akan tersimpan. Isi Firebase config di bagian atas file JS.
-  </div>
-
-  <!-- HEADER -->
   <header class="header">
     <div class="header-brand">Lovebox</div>
     <div class="header-sub">Song Request</div>
     <button class="header-secret" id="secret-login" onclick="openLoginModal()" title=" ">♪</button>
   </header>
 
-  <!-- BAND STATUS -->
   <div class="band-status on-stage" id="band-status">
     <span class="dot"></span>
     <span class="label" id="band-status-label">On Stage</span>
   </div>
 
-  <!-- BROADCAST BANNER -->
   <div class="broadcast hidden" id="broadcast-banner">
     <span id="broadcast-text"></span>
     <button class="dismiss" onclick="dismissBroadcast()">✕</button>
@@ -777,28 +274,21 @@ body::after {
 
   <!-- ═══ GUEST VIEW ═══ -->
   <div id="guest-view">
-
-    <!-- REQUEST FORM -->
-    <div class="form-card" id="request-form-card">
+    <div class="form-card">
       <div class="form-title">Request a Song</div>
       <div id="form-state">
         <div class="form-group">
           <label class="form-label">Nama Kamu</label>
           <input type="text" class="form-input" id="input-name" placeholder="Siapa nih?" maxlength="50">
         </div>
-
         <div id="song-rows-container">
-          <div class="song-row" data-index="0">
-            <div class="song-row-header">
-              <span class="song-row-label">Lagu 1</span>
-            </div>
+          <div class="song-row">
+            <div class="song-row-header"><span class="song-row-label">Lagu 1</span></div>
             <input type="text" class="form-input song-title" placeholder="Judul lagu" maxlength="100">
             <input type="text" class="form-input song-artist" placeholder="Artist (optional)" maxlength="80">
           </div>
         </div>
-
         <button class="add-song-btn" id="add-song-btn" onclick="addSongRow()">+ Tambah lagu lain <span style="opacity:0.5;font-size:0.7rem;">(max 3)</span></button>
-
         <div class="form-group">
           <label class="form-label">Dedication <span class="optional">(optional)</span></label>
           <textarea class="form-textarea" id="input-dedication" placeholder="Pesan spesial buat seseorang..." maxlength="200"></textarea>
@@ -808,15 +298,12 @@ body::after {
       <div class="success-state hidden" id="success-state">
         <div class="success-icon">✓</div>
         <div class="success-title">Request Terkirim!</div>
-        <div class="success-sub">Lagu kamu udah masuk antrian. Stay tuned!</div>
+        <div class="success-sub" id="success-sub-text">Lagu kamu udah masuk antrian. Stay tuned!</div>
         <button class="btn btn-outline" onclick="resetForm()">Request Lagi</button>
       </div>
     </div>
 
-    <!-- LIVE QUEUE (Guest view) -->
-    <div class="section-title">
-      Live Queue <span class="count" id="queue-count">0</span>
-    </div>
+    <div class="section-title">Live Queue <span class="count" id="queue-count">0</span></div>
     <div class="queue-list" id="guest-queue"></div>
   </div>
 
@@ -827,7 +314,6 @@ body::after {
       <button class="btn btn-outline btn-sm" onclick="logoutMusician()">Logout</button>
     </div>
 
-    <!-- Band Status Toggle -->
     <div class="musician-section">
       <div class="musician-section-title">📡 Band Status</div>
       <div style="display:flex;gap:8px;">
@@ -836,7 +322,6 @@ body::after {
       </div>
     </div>
 
-    <!-- Broadcast -->
     <div class="musician-section">
       <div class="musician-section-title">📢 Broadcast</div>
       <div style="display:flex;gap:6px;">
@@ -846,13 +331,11 @@ body::after {
       </div>
     </div>
 
-    <!-- Queue Management -->
     <div class="musician-section">
       <div class="musician-section-title">🎵 Request Queue <span class="count" id="musician-queue-count">0</span></div>
       <div class="queue-list" id="musician-queue"></div>
     </div>
 
-    <!-- Setlist Manager -->
     <div class="musician-section">
       <div class="musician-section-title">📋 Setlist</div>
       <div class="session-tabs">
@@ -861,25 +344,56 @@ body::after {
         <button class="session-tab" data-session="3" onclick="switchSession(3)">Sesi 3</button>
       </div>
       <div id="setlist-items"></div>
-      <div class="add-setlist-row">
-        <input type="text" class="form-input" id="setlist-song-input" placeholder="Song" maxlength="100">
-        <input type="text" class="form-input" id="setlist-artist-input" placeholder="Artist" maxlength="80" style="max-width:120px;">
-        <button class="btn btn-outline btn-sm" onclick="addToSetlist()">Add</button>
+      <div style="margin-top:10px;">
+        <label class="form-label" style="margin-bottom:4px;">Tambah dari Song List</label>
+        <input type="text" class="form-input" id="setlist-pick-search" placeholder="Cari lagu di Song List..." style="font-size:0.8rem;padding:8px 10px;" oninput="filterSongPicker()">
+        <div id="song-picker-dropdown" class="song-picker-dropdown hidden"></div>
+      </div>
+      <div style="margin-top:8px;">
+        <label class="form-label" style="margin-bottom:4px;">Atau tambah manual</label>
+        <div class="add-row">
+          <input type="text" class="form-input" id="setlist-song-input" placeholder="Song" maxlength="100">
+          <input type="text" class="form-input" id="setlist-artist-input" placeholder="Artist" maxlength="80" style="max-width:100px;">
+          <select class="form-select" id="setlist-key-input" style="max-width:72px;padding:8px 6px;font-size:0.75rem;">
+            <option value="">Key</option>
+            <option>C</option><option>C#</option><option>D</option><option>D#</option><option>E</option><option>F</option><option>F#</option><option>G</option><option>G#</option><option>A</option><option>A#</option><option>B</option>
+            <option>Cm</option><option>C#m</option><option>Dm</option><option>D#m</option><option>Em</option><option>Fm</option><option>F#m</option><option>Gm</option><option>G#m</option><option>Am</option><option>A#m</option><option>Bm</option>
+          </select>
+          <button class="btn btn-outline btn-sm" onclick="addToSetlistManual()">Add</button>
+        </div>
       </div>
     </div>
 
-    <!-- Master Reset -->
+    <div class="musician-section">
+      <div class="musician-section-title">🎶 Song List <span class="count" id="songlist-count">0</span></div>
+      <div>
+        <input type="text" class="form-input" id="songlist-search" placeholder="Cari lagu..." style="font-size:0.8rem;padding:8px 10px;margin-bottom:10px;" oninput="renderSongList()">
+      </div>
+      <div id="songlist-items" style="max-height:400px;overflow-y:auto;"></div>
+      <div style="margin-top:10px;">
+        <label class="form-label" style="margin-bottom:4px;">Tambah Lagu Baru</label>
+        <div class="add-row">
+          <input type="text" class="form-input" id="songlist-add-song" placeholder="Song" maxlength="100">
+          <input type="text" class="form-input" id="songlist-add-artist" placeholder="Artist" maxlength="80" style="max-width:100px;">
+          <select class="form-select" id="songlist-add-key" style="max-width:72px;padding:8px 6px;font-size:0.75rem;">
+            <option value="">Key</option>
+            <option>C</option><option>C#</option><option>D</option><option>D#</option><option>E</option><option>F</option><option>F#</option><option>G</option><option>G#</option><option>A</option><option>A#</option><option>B</option>
+            <option>Cm</option><option>C#m</option><option>Dm</option><option>D#m</option><option>Em</option><option>Fm</option><option>F#m</option><option>Gm</option><option>G#m</option><option>Am</option><option>A#m</option><option>Bm</option>
+          </select>
+          <button class="btn btn-outline btn-sm" onclick="addToSongList()">Add</button>
+        </div>
+      </div>
+    </div>
+
     <div class="musician-section">
       <div class="musician-section-title">⚙️ Tools</div>
-      <button class="btn btn-danger" style="width:100%;" onclick="masterReset()">🗑 Clear All Requests</button>
+      <button class="btn btn-danger" style="width:100%;margin-bottom:8px;" onclick="masterResetRequests()">🗑 Clear All Requests</button>
+      <button class="btn btn-danger" style="width:100%;" onclick="masterResetSetlist()">📋 Clear Setlists (New Gig)</button>
     </div>
   </div>
 
-  <!-- FOOTER -->
   <div class="footer" id="guest-footer">
-    <a class="tip-btn" href="https://saweria.co/widgets/qr?streamKey=082a53b1e5b404a4d0895b28970038a8" target="_blank" rel="noopener">
-      ☕ Tip the Band
-    </a>
+    <a class="tip-btn" href="https://saweria.co/widgets/qr?streamKey=082a53b1e5b404a4d0895b28970038a8" target="_blank" rel="noopener">☕ Tip the Band</a>
     <br>
     <a class="social-link" href="https://www.instagram.com/lovebox.entertainment" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
@@ -889,15 +403,12 @@ body::after {
   </div>
 </div>
 
-<!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
 <script>
-/* ═══════════════════════════════════════════════════════
-   ██ CONFIG — EDIT THESE VALUES ██
-   ═══════════════════════════════════════════════════════ */
-
+/* ═══════════════════════════════════════════
+   ██ CONFIG — EDIT THESE ██
+   ═══════════════════════════════════════════ */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyA2nxveOoj-rsv51aEyUT3SieFEtLNGS9c",
   authDomain: "lovebox-request-d06d3.firebaseapp.com",
@@ -907,535 +418,206 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "49130420743",
   appId: "1:49130420743:web:4148780005449ae15788a2"
 };
-
 const MUSICIAN_PASSWORD = "lovebox2026";
+/* ═══════════════════════════════════════════ */
 
-/* ═══════════════════════════════════════════════════════
-   END CONFIG
-   ═══════════════════════════════════════════════════════ */
+let db=null,isFirebaseReady=false,isMusician=false,currentSession=1,wakeLock=null,quickAddData=null,broadcastDismissed=false,songListCache={};
 
-// ─── State ───
-let db = null;
-let isFirebaseReady = false;
-let isMusician = false;
-let currentSession = 1;
-let wakeLock = null;
-let quickAddData = null;
-let broadcastDismissed = false;
+function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=String(s);return d.innerHTML;}
+function toast(m,t='info'){const c=document.getElementById('toast-container'),el=document.createElement('div');el.className=`toast toast-${t}`;el.textContent=m;c.appendChild(el);setTimeout(()=>{el.classList.add('removing');setTimeout(()=>el.remove(),300);},3000);}
+function isConfigured(){return FIREBASE_CONFIG.apiKey&&!FIREBASE_CONFIG.apiKey.includes('YOUR_');}
 
-// ─── XSS Protection ───
-function esc(str) {
-  if (!str) return '';
-  const div = document.createElement('div');
-  div.textContent = String(str);
-  return div.innerHTML;
+function initFirebase(){
+  if(!isConfigured()){document.getElementById('loading-screen').classList.add('hidden');document.getElementById('config-warning').classList.remove('hidden');return;}
+  try{
+    firebase.initializeApp(FIREBASE_CONFIG);db=firebase.database();isFirebaseReady=true;
+    listenToQueue();listenToMeta();listenToSetlist();listenToSongList();
+    setTimeout(()=>document.getElementById('loading-screen').classList.add('hidden'),800);
+  }catch(e){console.error(e);document.getElementById('loading-screen').classList.add('hidden');document.getElementById('config-warning').classList.remove('hidden');}
 }
 
-// ─── Toast System ───
-function toast(message, type = 'info') {
-  const container = document.getElementById('toast-container');
-  const el = document.createElement('div');
-  el.className = `toast toast-${type}`;
-  el.textContent = message;
-  container.appendChild(el);
-  setTimeout(() => {
-    el.classList.add('removing');
-    setTimeout(() => el.remove(), 300);
-  }, 3000);
-}
+function listenToQueue(){if(!db)return;db.ref('requests').orderByChild('timestamp').on('value',s=>{const d=s.val()||{};renderGuestQueue(d);if(isMusician)renderMusicianQueue(d);});}
+function listenToMeta(){if(!db)return;db.ref('meta/status').on('value',s=>updateBandStatus(s.val()||'on-stage'));db.ref('meta/broadcast').on('value',s=>updateBroadcast(s.val()));}
+function listenToSetlist(){if(!db)return;[1,2,3].forEach(s=>{db.ref(`setlist/session${s}`).on('value',()=>{if(isMusician&&currentSession===s)renderSetlist(s);});});}
+function listenToSongList(){if(!db)return;db.ref('songlist').on('value',s=>{songListCache=s.val()||{};if(isMusician)renderSongList();});}
 
-// ─── Firebase Init ───
-function isConfigured() {
-  return FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.includes('YOUR_');
+function updateBandStatus(st){
+  const el=document.getElementById('band-status'),lb=document.getElementById('band-status-label');
+  el.className='band-status '+(st==='break'?'on-break':'on-stage');
+  lb.textContent=st==='break'?'On Break':'On Stage';
+  if(isMusician){document.getElementById('toggle-onstage').classList.toggle('active',st!=='break');document.getElementById('toggle-break').classList.toggle('active',st==='break');}
 }
-
-function initFirebase() {
-  if (!isConfigured()) {
-    document.getElementById('loading-screen').classList.add('hidden');
-    document.getElementById('config-warning').classList.remove('hidden');
-    return;
-  }
-  try {
-    firebase.initializeApp(FIREBASE_CONFIG);
-    db = firebase.database();
-    isFirebaseReady = true;
-    listenToQueue();
-    listenToMeta();
-    listenToSetlist();
-    // Hide loading after brief delay for visual polish
-    setTimeout(() => {
-      document.getElementById('loading-screen').classList.add('hidden');
-    }, 800);
-  } catch (e) {
-    console.error('Firebase init error:', e);
-    document.getElementById('loading-screen').classList.add('hidden');
-    document.getElementById('config-warning').classList.remove('hidden');
-    toast('Firebase initialization failed', 'error');
-  }
-}
-
-// ─── Listeners ───
-function listenToQueue() {
-  if (!db) return;
-  db.ref('requests').orderByChild('timestamp').on('value', (snap) => {
-    const data = snap.val() || {};
-    renderGuestQueue(data);
-    if (isMusician) renderMusicianQueue(data);
-  });
-}
-
-function listenToMeta() {
-  if (!db) return;
-  db.ref('meta/status').on('value', (snap) => {
-    const status = snap.val() || 'on-stage';
-    updateBandStatus(status);
-  });
-  db.ref('meta/broadcast').on('value', (snap) => {
-    const msg = snap.val();
-    updateBroadcast(msg);
-  });
-}
-
-function listenToSetlist() {
-  if (!db) return;
-  [1, 2, 3].forEach(s => {
-    db.ref(`setlist/session${s}`).on('value', () => {
-      if (isMusician && currentSession === s) renderSetlist(s);
-    });
-  });
-}
-
-// ─── Band Status ───
-function updateBandStatus(status) {
-  const el = document.getElementById('band-status');
-  const label = document.getElementById('band-status-label');
-  el.className = 'band-status ' + (status === 'break' ? 'on-break' : 'on-stage');
-  label.textContent = status === 'break' ? 'On Break' : 'On Stage';
-
-  if (isMusician) {
-    document.getElementById('toggle-onstage').classList.toggle('active', status !== 'break');
-    document.getElementById('toggle-break').classList.toggle('active', status === 'break');
-  }
-}
-
-function setStatus(status) {
-  if (!db) return;
-  db.ref('meta/status').set(status);
-  toast(status === 'break' ? 'Band on break' : 'Band on stage!', 'info');
-}
-
-// ─── Broadcast ───
-function updateBroadcast(msg) {
-  const banner = document.getElementById('broadcast-banner');
-  const text = document.getElementById('broadcast-text');
-  if (msg && !broadcastDismissed) {
-    text.textContent = msg;
-    banner.classList.remove('hidden');
-  } else {
-    banner.classList.add('hidden');
-  }
-}
-
-function dismissBroadcast() {
-  broadcastDismissed = true;
-  document.getElementById('broadcast-banner').classList.add('hidden');
-}
-
-function setBroadcast() {
-  if (!db) return;
-  const val = document.getElementById('broadcast-input').value.trim();
-  if (!val) return toast('Tulis pesan dulu', 'error');
-  db.ref('meta/broadcast').set(val);
-  broadcastDismissed = false;
-  toast('Broadcast sent!', 'success');
-}
-
-function clearBroadcast() {
-  if (!db) return;
-  db.ref('meta/broadcast').set(null);
-  document.getElementById('broadcast-input').value = '';
-  toast('Broadcast cleared', 'info');
-}
+function setStatus(s){if(!db)return;db.ref('meta/status').set(s);toast(s==='break'?'Band on break':'Band on stage!','info');}
+function updateBroadcast(m){const b=document.getElementById('broadcast-banner'),t=document.getElementById('broadcast-text');if(m&&!broadcastDismissed){t.textContent=m;b.classList.remove('hidden');}else{b.classList.add('hidden');}}
+function dismissBroadcast(){broadcastDismissed=true;document.getElementById('broadcast-banner').classList.add('hidden');}
+function setBroadcast(){if(!db)return;const v=document.getElementById('broadcast-input').value.trim();if(!v)return toast('Tulis pesan dulu','error');db.ref('meta/broadcast').set(v);broadcastDismissed=false;toast('Broadcast sent!','success');}
+function clearBroadcast(){if(!db)return;db.ref('meta/broadcast').set(null);document.getElementById('broadcast-input').value='';toast('Broadcast cleared','info');}
 
 // ─── Multi-Song Form ───
-let songRowCount = 1;
+let songRowCount=1;
+function addSongRow(){
+  if(songRowCount>=3)return;songRowCount++;
+  const c=document.getElementById('song-rows-container'),r=document.createElement('div');r.className='song-row';
+  r.innerHTML=`<div class="song-row-header"><span class="song-row-label">Lagu ${songRowCount}</span><button class="song-row-remove" onclick="removeSongRow(this)">✕</button></div><input type="text" class="form-input song-title" placeholder="Judul lagu" maxlength="100"><input type="text" class="form-input song-artist" placeholder="Artist (optional)" maxlength="80">`;
+  c.appendChild(r);if(songRowCount>=3)document.getElementById('add-song-btn').disabled=true;r.querySelector('.song-title').focus();
+}
+function removeSongRow(b){b.closest('.song-row').remove();songRowCount--;document.getElementById('add-song-btn').disabled=false;document.querySelectorAll('.song-row').forEach((r,i)=>{r.querySelector('.song-row-label').textContent=`Lagu ${i+1}`;});}
+function getSongs(){const s=[];document.querySelectorAll('.song-row').forEach(r=>{const t=r.querySelector('.song-title').value.trim(),a=r.querySelector('.song-artist').value.trim();if(t)s.push({song:t,artist:a||''});});return s;}
 
-function addSongRow() {
-  if (songRowCount >= 3) return;
-  songRowCount++;
-  const container = document.getElementById('song-rows-container');
-  const row = document.createElement('div');
-  row.className = 'song-row';
-  row.dataset.index = songRowCount - 1;
-  row.innerHTML = `
-    <div class="song-row-header">
-      <span class="song-row-label">Lagu ${songRowCount}</span>
-      <button class="song-row-remove" onclick="removeSongRow(this)">✕</button>
-    </div>
-    <input type="text" class="form-input song-title" placeholder="Judul lagu" maxlength="100">
-    <input type="text" class="form-input song-artist" placeholder="Artist (optional)" maxlength="80">
-  `;
-  container.appendChild(row);
-  if (songRowCount >= 3) {
-    document.getElementById('add-song-btn').disabled = true;
-  }
-  // Focus the new input
-  row.querySelector('.song-title').focus();
+function submitRequest(){
+  const name=document.getElementById('input-name').value.trim(),songs=getSongs(),ded=document.getElementById('input-dedication').value.trim();
+  if(!name)return toast('Isi nama kamu dulu!','error');
+  if(songs.length===0)return toast('Minimal 1 judul lagu ya!','error');
+  const last=parseInt(localStorage.getItem('lovebox_last_request')||'0'),diff=(Date.now()-last)/1000;
+  if(diff<60)return toast(`Tunggu ${Math.ceil(60-diff)} detik lagi ya`,'error');
+  if(!db)return toast('Firebase not connected','error');
+  const btn=document.getElementById('submit-btn');btn.disabled=true;btn.textContent='Sending...';
+  const ts=firebase.database.ServerValue.TIMESTAMP,updates={};
+  songs.forEach((s,i)=>{const k=db.ref('requests').push().key;updates[`requests/${k}`]={name,song:s.song,artist:s.artist,dedication:i===0?(ded||''):'',status:'waiting',timestamp:ts};});
+  db.ref().update(updates).then(()=>{
+    localStorage.setItem('lovebox_last_request',String(Date.now()));
+    document.getElementById('form-state').classList.add('hidden');document.getElementById('success-state').classList.remove('hidden');
+    document.getElementById('success-sub-text').textContent=songs.length>1?`${songs.length} lagu udah masuk antrian. Stay tuned!`:'Lagu kamu udah masuk antrian. Stay tuned!';
+    btn.disabled=false;btn.textContent='✦ Kirim Request';toast(`${songs.length} request terkirim! 🎶`,'success');
+  }).catch(()=>{btn.disabled=false;btn.textContent='✦ Kirim Request';toast('Gagal mengirim, coba lagi','error');});
+}
+function resetForm(){
+  document.getElementById('song-rows-container').innerHTML=`<div class="song-row"><div class="song-row-header"><span class="song-row-label">Lagu 1</span></div><input type="text" class="form-input song-title" placeholder="Judul lagu" maxlength="100"><input type="text" class="form-input song-artist" placeholder="Artist (optional)" maxlength="80"></div>`;
+  songRowCount=1;document.getElementById('add-song-btn').disabled=false;document.getElementById('input-dedication').value='';
+  document.getElementById('form-state').classList.remove('hidden');document.getElementById('success-state').classList.add('hidden');
 }
 
-function removeSongRow(btn) {
-  btn.closest('.song-row').remove();
-  songRowCount--;
-  document.getElementById('add-song-btn').disabled = false;
-  // Re-label remaining rows
-  document.querySelectorAll('.song-row').forEach((row, i) => {
-    row.querySelector('.song-row-label').textContent = `Lagu ${i + 1}`;
-  });
-}
-
-function getSongs() {
-  const songs = [];
-  document.querySelectorAll('.song-row').forEach(row => {
-    const title = row.querySelector('.song-title').value.trim();
-    const artist = row.querySelector('.song-artist').value.trim();
-    if (title) songs.push({ song: title, artist: artist || '' });
-  });
-  return songs;
-}
-
-// ─── Guest Request ───
-function submitRequest() {
-  const name = document.getElementById('input-name').value.trim();
-  const songs = getSongs();
-  const dedication = document.getElementById('input-dedication').value.trim();
-
-  if (!name) return toast('Isi nama kamu dulu!', 'error');
-  if (songs.length === 0) return toast('Minimal 1 judul lagu ya!', 'error');
-
-  // Cooldown check
-  const lastTime = parseInt(localStorage.getItem('lovebox_last_request') || '0');
-  const now = Date.now();
-  const diff = (now - lastTime) / 1000;
-  if (diff < 60) {
-    const remaining = Math.ceil(60 - diff);
-    return toast(`Tunggu ${remaining} detik lagi ya`, 'error');
-  }
-
-  if (!db) return toast('Firebase not connected', 'error');
-
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.textContent = 'Sending...';
-
-  // Push each song as a separate request (grouped by same name/dedication/timestamp)
-  const ts = firebase.database.ServerValue.TIMESTAMP;
-  const batchId = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-  const updates = {};
-  songs.forEach((s, i) => {
-    const key = db.ref('requests').push().key;
-    updates[`requests/${key}`] = {
-      name: name,
-      song: s.song,
-      artist: s.artist,
-      dedication: i === 0 ? (dedication || '') : '',
-      status: 'waiting',
-      timestamp: ts,
-      batchId: batchId
-    };
-  });
-
-  db.ref().update(updates).then(() => {
-    localStorage.setItem('lovebox_last_request', String(Date.now()));
-    document.getElementById('form-state').classList.add('hidden');
-    document.getElementById('success-state').classList.remove('hidden');
-    const songWord = songs.length > 1 ? `${songs.length} lagu` : 'Lagu';
-    document.querySelector('.success-sub').textContent = `${songWord} kamu udah masuk antrian. Stay tuned!`;
-    btn.disabled = false;
-    btn.textContent = '✦ Kirim Request';
-    toast(`${songs.length} request terkirim! 🎶`, 'success');
-  }).catch((e) => {
-    console.error(e);
-    btn.disabled = false;
-    btn.textContent = '✦ Kirim Request';
-    toast('Gagal mengirim, coba lagi', 'error');
-  });
-}
-
-function resetForm() {
-  // Reset to single song row
-  const container = document.getElementById('song-rows-container');
-  container.innerHTML = `
-    <div class="song-row" data-index="0">
-      <div class="song-row-header">
-        <span class="song-row-label">Lagu 1</span>
-      </div>
-      <input type="text" class="form-input song-title" placeholder="Judul lagu" maxlength="100">
-      <input type="text" class="form-input song-artist" placeholder="Artist (optional)" maxlength="80">
-    </div>
-  `;
-  songRowCount = 1;
-  document.getElementById('add-song-btn').disabled = false;
-  document.getElementById('input-dedication').value = '';
-  document.getElementById('form-state').classList.remove('hidden');
-  document.getElementById('success-state').classList.add('hidden');
-}
-
-// ─── Queue Rendering ───
-function renderGuestQueue(data) {
-  const container = document.getElementById('guest-queue');
-  const countEl = document.getElementById('queue-count');
-  const entries = Object.entries(data).sort((a, b) => (a[1].timestamp || 0) - (b[1].timestamp || 0));
-  // Filter out 'done' for guest view
-  const visible = entries.filter(([, v]) => v.status !== 'done');
-  countEl.textContent = visible.length;
-
-  if (visible.length === 0) {
-    container.innerHTML = `
-      <div class="queue-empty">
-        <div class="queue-empty-icon">🎵</div>
-        <div class="queue-empty-text">Belum ada request</div>
-        <div class="queue-empty-sub">Jadi yang pertama request lagu!</div>
-      </div>`;
-    return;
-  }
-
-  container.innerHTML = visible.map(([id, r]) => {
-    const statusClass = r.status === 'gas' ? 'is-gas' : r.status === 'skip' ? 'is-skip' : '';
-    const badgeClass = r.status === 'gas' ? 'badge-gas' : r.status === 'skip' ? 'badge-skip' : 'badge-waiting';
-    const badgeLabel = r.status === 'gas' ? '🔥 Gas!' : r.status === 'skip' ? 'Skip' : 'Waiting';
-    return `
-      <div class="queue-item ${statusClass}">
-        <div class="queue-item-header">
-          <div>
-            <div class="queue-song">${esc(r.song)}</div>
-            ${r.artist ? `<div class="queue-artist">${esc(r.artist)}</div>` : ''}
-          </div>
-          <span class="badge ${badgeClass}">${badgeLabel}</span>
-        </div>
-        <div class="queue-requester">dari ${esc(r.name)}</div>
-        ${r.dedication ? `<div class="queue-dedication">"${esc(r.dedication)}"</div>` : ''}
-      </div>`;
+// ─── Queue ───
+function renderGuestQueue(data){
+  const c=document.getElementById('guest-queue'),cnt=document.getElementById('queue-count');
+  const entries=Object.entries(data).sort((a,b)=>(a[1].timestamp||0)-(b[1].timestamp||0));
+  const visible=entries.filter(([,v])=>v.status!=='skip');
+  cnt.textContent=visible.length;
+  if(visible.length===0){c.innerHTML=`<div class="queue-empty"><div class="queue-empty-icon">🎵</div><div class="queue-empty-text">Belum ada request</div><div class="queue-empty-sub">Jadi yang pertama request lagu!</div></div>`;return;}
+  c.innerHTML=visible.map(([id,r])=>{
+    const isDone=r.status==='done',isGas=r.status==='gas';
+    const cls=isGas?'is-gas':isDone?'is-done':'';
+    const bc=isGas?'badge-gas':isDone?'badge-done':'badge-waiting';
+    const bl=isGas?'🔥 Gas!':isDone?'✓ Played':'Waiting';
+    return`<div class="queue-item ${cls}"><div class="queue-item-header"><div><div class="queue-song">${esc(r.song)}</div>${r.artist?`<div class="queue-artist">${esc(r.artist)}</div>`:''}</div><span class="badge ${bc}">${bl}</span></div><div class="queue-requester">dari ${esc(r.name)}</div>${r.dedication?`<div class="queue-dedication">"${esc(r.dedication)}"</div>`:''}</div>`;
   }).join('');
 }
 
-function renderMusicianQueue(data) {
-  const container = document.getElementById('musician-queue');
-  const countEl = document.getElementById('musician-queue-count');
-  const entries = Object.entries(data).sort((a, b) => (a[1].timestamp || 0) - (b[1].timestamp || 0));
-  const visible = entries.filter(([, v]) => v.status !== 'done');
-  countEl.textContent = visible.length;
-
-  if (visible.length === 0) {
-    container.innerHTML = `<div class="queue-empty"><div class="queue-empty-text">Queue kosong ✨</div></div>`;
-    return;
-  }
-
-  container.innerHTML = visible.map(([id, r]) => {
-    const statusClass = r.status === 'gas' ? 'is-gas' : r.status === 'skip' ? 'is-skip' : '';
-    return `
-      <div class="queue-item ${statusClass}">
-        <div class="queue-item-header">
-          <div>
-            <div class="queue-song">${esc(r.song)}</div>
-            ${r.artist ? `<div class="queue-artist">${esc(r.artist)}</div>` : ''}
-          </div>
-        </div>
-        <div class="queue-requester">dari ${esc(r.name)}</div>
-        ${r.dedication ? `<div class="queue-dedication">"${esc(r.dedication)}"</div>` : ''}
-        <div class="musician-actions">
-          <button class="btn btn-gas btn-xs" onclick="setRequestStatus('${id}','gas')">🔥 Gas!</button>
-          <button class="btn btn-danger btn-xs" onclick="setRequestStatus('${id}','skip')">✕ Skip</button>
-          <button class="btn btn-done btn-xs" onclick="setRequestStatus('${id}','done')">✓ Done</button>
-          <button class="btn btn-outline btn-xs" onclick="openQuickAdd('${id}','${esc(r.song).replace(/'/g, "\\'")}','${esc(r.artist || '').replace(/'/g, "\\'")}')">📋 Setlist</button>
-        </div>
-      </div>`;
+function renderMusicianQueue(data){
+  const c=document.getElementById('musician-queue'),cnt=document.getElementById('musician-queue-count');
+  const entries=Object.entries(data).sort((a,b)=>(a[1].timestamp||0)-(b[1].timestamp||0));
+  const active=entries.filter(([,v])=>v.status==='waiting'||v.status==='gas');
+  cnt.textContent=active.length;
+  if(active.length===0){c.innerHTML=`<div class="queue-empty"><div class="queue-empty-text">Queue kosong ✨</div></div>`;return;}
+  c.innerHTML=active.map(([id,r])=>{
+    const cls=r.status==='gas'?'is-gas':'';
+    return`<div class="queue-item ${cls}"><div class="queue-item-header"><div><div class="queue-song">${esc(r.song)}</div>${r.artist?`<div class="queue-artist">${esc(r.artist)}</div>`:''}</div></div><div class="queue-requester">dari ${esc(r.name)}</div>${r.dedication?`<div class="queue-dedication">"${esc(r.dedication)}"</div>`:''}<div class="musician-actions"><button class="btn btn-gas btn-xs" onclick="setRequestStatus('${id}','gas')">🔥 Gas!</button><button class="btn btn-danger btn-xs" onclick="setRequestStatus('${id}','skip')">✕ Skip</button><button class="btn btn-done btn-xs" onclick="setRequestStatus('${id}','done')">✓ Done</button><button class="btn btn-outline btn-xs" onclick="openQuickAdd('${id}','${esc(r.song).replace(/'/g,"\\'")}','${esc(r.artist||'').replace(/'/g,"\\'")}')">📋 +Setlist</button></div></div>`;
   }).join('');
 }
 
-// ─── Request Actions ───
-function setRequestStatus(id, status) {
-  if (!db) return;
-  if (status === 'done') {
-    db.ref(`requests/${id}`).remove();
-    toast('Removed from queue', 'info');
-  } else {
-    db.ref(`requests/${id}/status`).set(status);
-    toast(status === 'gas' ? 'Let\'s go! 🔥' : 'Skipped', status === 'gas' ? 'success' : 'info');
-  }
-}
+function setRequestStatus(id,st){if(!db)return;db.ref(`requests/${id}/status`).set(st);const m={gas:"Let's go! 🔥",skip:'Skipped',done:'Done ✓'};toast(m[st]||st,st==='gas'?'success':'info');}
 
-// ─── Quick Add to Setlist ───
-function openQuickAdd(id, song, artist) {
-  quickAddData = { id, song, artist };
-  document.getElementById('quickadd-song-label').textContent = `${song}${artist ? ' — ' + artist : ''}`;
-  document.getElementById('quickadd-modal').classList.remove('hidden');
-}
-
-function closeQuickAdd() {
-  document.getElementById('quickadd-modal').classList.add('hidden');
-  quickAddData = null;
-}
-
-function quickAddToSession(session) {
-  if (!db || !quickAddData) return;
-  db.ref(`setlist/session${session}`).push({
-    song: quickAddData.song,
-    artist: quickAddData.artist || ''
-  }).then(() => {
-    toast(`Added to Sesi ${session}`, 'success');
-    closeQuickAdd();
-  });
+// ─── Quick Add ───
+function openQuickAdd(id,song,artist){quickAddData={id,song,artist};document.getElementById('quickadd-song-label').textContent=`${song}${artist?' — '+artist:''}`;document.getElementById('quickadd-key').value='';document.getElementById('quickadd-modal').classList.remove('hidden');}
+function closeQuickAdd(){document.getElementById('quickadd-modal').classList.add('hidden');quickAddData=null;}
+function quickAddToSession(session){
+  if(!db||!quickAddData)return;
+  const key=document.getElementById('quickadd-key').value||'';
+  db.ref(`setlist/session${session}`).push({song:quickAddData.song,artist:quickAddData.artist||'',key});
+  addToSongListIfNew(quickAddData.song,quickAddData.artist||'',key);
+  toast(`Added to Sesi ${session}`,'success');closeQuickAdd();
 }
 
 // ─── Setlist ───
-function switchSession(s) {
-  currentSession = s;
-  document.querySelectorAll('.session-tab').forEach(t => {
-    t.classList.toggle('active', parseInt(t.dataset.session) === s);
-  });
-  renderSetlist(s);
-}
-
-function renderSetlist(session) {
-  if (!db) return;
-  db.ref(`setlist/session${session}`).once('value', (snap) => {
-    const data = snap.val() || {};
-    const container = document.getElementById('setlist-items');
-    const entries = Object.entries(data);
-    if (entries.length === 0) {
-      container.innerHTML = `<div style="text-align:center;color:var(--text-muted);font-size:0.78rem;padding:12px;">Setlist kosong</div>`;
-      return;
-    }
-    container.innerHTML = entries.map(([id, item]) => `
-      <div class="setlist-item">
-        <div class="song-info">
-          <div class="song-name">${esc(item.song)}</div>
-          ${item.artist ? `<div class="song-artist">${esc(item.artist)}</div>` : ''}
-        </div>
-        <button class="remove-btn" onclick="removeSetlistItem(${session},'${id}')">✕</button>
-      </div>
-    `).join('');
+function switchSession(s){currentSession=s;document.querySelectorAll('.session-tab').forEach(t=>t.classList.toggle('active',parseInt(t.dataset.session)===s));renderSetlist(s);}
+function renderSetlist(session){
+  if(!db)return;
+  db.ref(`setlist/session${session}`).once('value',snap=>{
+    const data=snap.val()||{},c=document.getElementById('setlist-items'),entries=Object.entries(data);
+    if(entries.length===0){c.innerHTML=`<div style="text-align:center;color:var(--text-muted);font-size:0.78rem;padding:12px;">Setlist kosong</div>`;return;}
+    c.innerHTML=entries.map(([id,item])=>`<div class="setlist-item"><div class="song-info"><div class="song-name">${esc(item.song)}</div>${item.artist?`<div class="song-artist">${esc(item.artist)}</div>`:''}</div>${item.key?`<span class="song-key">${esc(item.key)}</span>`:''}<button class="remove-btn" onclick="removeSetlistItem(${session},'${id}')">✕</button></div>`).join('');
   });
 }
-
-function addToSetlist() {
-  if (!db) return;
-  const song = document.getElementById('setlist-song-input').value.trim();
-  const artist = document.getElementById('setlist-artist-input').value.trim();
-  if (!song) return toast('Song title required', 'error');
-  db.ref(`setlist/session${currentSession}`).push({ song, artist: artist || '' }).then(() => {
-    document.getElementById('setlist-song-input').value = '';
-    document.getElementById('setlist-artist-input').value = '';
-    toast('Added to setlist', 'success');
+function filterSongPicker(){
+  const q=document.getElementById('setlist-pick-search').value.trim().toLowerCase(),dd=document.getElementById('song-picker-dropdown');
+  if(!q){dd.classList.add('hidden');return;}
+  const matches=Object.entries(songListCache).filter(([,s])=>s.song.toLowerCase().includes(q)||(s.artist||'').toLowerCase().includes(q)).slice(0,8);
+  if(matches.length===0){dd.innerHTML='<div style="padding:10px;color:var(--text-muted);font-size:0.78rem;">Ga ketemu</div>';dd.classList.remove('hidden');return;}
+  dd.innerHTML=matches.map(([id,s])=>`<div class="song-picker-item" onclick="pickSongForSetlist('${esc(s.song).replace(/'/g,"\\'")}','${esc(s.artist||'').replace(/'/g,"\\'")}','${esc(s.key||'').replace(/'/g,"\\'")}')"><div><span class="pick-name">${esc(s.song)}</span> <span class="pick-artist">${esc(s.artist||'')}</span></div>${s.key?`<span class="pick-key">${esc(s.key)}</span>`:''}</div>`).join('');
+  dd.classList.remove('hidden');
+}
+function pickSongForSetlist(song,artist,key){
+  if(!db)return;db.ref(`setlist/session${currentSession}`).push({song,artist,key:key||''});
+  document.getElementById('setlist-pick-search').value='';document.getElementById('song-picker-dropdown').classList.add('hidden');
+  toast('Added to setlist','success');
+}
+function addToSetlistManual(){
+  if(!db)return;
+  const song=document.getElementById('setlist-song-input').value.trim(),artist=document.getElementById('setlist-artist-input').value.trim(),key=document.getElementById('setlist-key-input').value;
+  if(!song)return toast('Song title required','error');
+  db.ref(`setlist/session${currentSession}`).push({song,artist:artist||'',key:key||''}).then(()=>{
+    addToSongListIfNew(song,artist,key);
+    document.getElementById('setlist-song-input').value='';document.getElementById('setlist-artist-input').value='';document.getElementById('setlist-key-input').value='';
+    toast('Added to setlist & song list','success');
   });
 }
+function removeSetlistItem(session,id){if(!db)return;db.ref(`setlist/session${session}/${id}`).remove();toast('Removed from setlist','info');}
 
-function removeSetlistItem(session, id) {
-  if (!db) return;
-  db.ref(`setlist/session${session}/${id}`).remove();
-  toast('Removed', 'info');
+// ─── Song List (Bank) ───
+function addToSongListIfNew(song,artist,key){
+  if(!db)return;
+  const exists=Object.values(songListCache).some(s=>s.song.toLowerCase()===song.toLowerCase());
+  if(!exists)db.ref('songlist').push({song,artist:artist||'',key:key||''});
 }
-
-// ─── Master Reset ───
-function masterReset() {
-  if (!confirm('Yakin mau hapus SEMUA request? Action ini ga bisa di-undo.')) return;
-  if (!db) return;
-  db.ref('requests').remove().then(() => {
-    toast('All requests cleared', 'success');
+function addToSongList(){
+  if(!db)return;
+  const song=document.getElementById('songlist-add-song').value.trim(),artist=document.getElementById('songlist-add-artist').value.trim(),key=document.getElementById('songlist-add-key').value;
+  if(!song)return toast('Song title required','error');
+  if(Object.values(songListCache).some(s=>s.song.toLowerCase()===song.toLowerCase()))return toast('Lagu udah ada di Song List','error');
+  db.ref('songlist').push({song,artist:artist||'',key:key||''}).then(()=>{
+    document.getElementById('songlist-add-song').value='';document.getElementById('songlist-add-artist').value='';document.getElementById('songlist-add-key').value='';
+    toast('Added to Song List','success');
   });
 }
+function renderSongList(){
+  const search=(document.getElementById('songlist-search')?.value||'').trim().toLowerCase();
+  const c=document.getElementById('songlist-items'),cnt=document.getElementById('songlist-count');
+  const all=Object.entries(songListCache);cnt.textContent=all.length;
+  const filtered=search?all.filter(([,s])=>s.song.toLowerCase().includes(search)||(s.artist||'').toLowerCase().includes(search)):all;
+  filtered.sort((a,b)=>a[1].song.localeCompare(b[1].song));
+  if(filtered.length===0){c.innerHTML=`<div style="text-align:center;color:var(--text-muted);font-size:0.78rem;padding:12px;">${search?'Ga ketemu':'Song list kosong'}</div>`;return;}
+  c.innerHTML=filtered.map(([id,s])=>`<div class="songlist-item"><div class="song-info"><div class="song-name">${esc(s.song)}</div>${s.artist?`<div class="song-artist">${esc(s.artist)}</div>`:''}</div>${s.key?`<span class="song-key">${esc(s.key)}</span>`:''}<button class="remove-btn" onclick="removeSongListItem('${id}')">✕</button></div>`).join('');
+}
+function removeSongListItem(id){if(!db)return;db.ref(`songlist/${id}`).remove();toast('Removed from Song List','info');}
 
-// ─── Musician Login ───
-function openLoginModal() {
-  document.getElementById('login-modal').classList.remove('hidden');
-  document.getElementById('login-password').value = '';
-  document.getElementById('login-error').classList.add('hidden');
-  setTimeout(() => document.getElementById('login-password').focus(), 100);
+// ─── Resets ───
+function masterResetRequests(){if(!confirm('Hapus SEMUA request? Song List tetap aman.'))return;if(!db)return;db.ref('requests').remove().then(()=>toast('All requests cleared','success'));}
+function masterResetSetlist(){if(!confirm('Clear semua setlist (Sesi 1-3)? Song List tetap aman.'))return;if(!db)return;db.ref().update({'setlist/session1':null,'setlist/session2':null,'setlist/session3':null}).then(()=>{renderSetlist(currentSession);toast('Setlists cleared — new gig ready!','success');});}
+
+// ─── Auth ───
+function openLoginModal(){document.getElementById('login-modal').classList.remove('hidden');document.getElementById('login-password').value='';document.getElementById('login-error').classList.add('hidden');setTimeout(()=>document.getElementById('login-password').focus(),100);}
+function closeLoginModal(){document.getElementById('login-modal').classList.add('hidden');}
+function attemptLogin(){if(document.getElementById('login-password').value===MUSICIAN_PASSWORD){isMusician=true;closeLoginModal();showMusicianView();toast('Welcome, musician! 🎸','success');requestWakeLock();}else{document.getElementById('login-error').classList.remove('hidden');}}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&!document.getElementById('login-modal').classList.contains('hidden'))attemptLogin();});
+
+function showMusicianView(){
+  document.getElementById('guest-view').classList.add('hidden');document.getElementById('guest-footer').classList.add('hidden');
+  document.getElementById('musician-view').classList.remove('hidden');document.getElementById('secret-login').classList.add('hidden');
+  if(db)db.ref('requests').once('value',s=>renderMusicianQueue(s.val()||{}));
+  renderSetlist(currentSession);renderSongList();
+}
+function logoutMusician(){
+  isMusician=false;releaseWakeLock();
+  document.getElementById('guest-view').classList.remove('hidden');document.getElementById('guest-footer').classList.remove('hidden');
+  document.getElementById('musician-view').classList.add('hidden');document.getElementById('secret-login').classList.remove('hidden');
+  toast('Logged out','info');
 }
 
-function closeLoginModal() {
-  document.getElementById('login-modal').classList.add('hidden');
-}
+async function requestWakeLock(){if('wakeLock' in navigator){try{wakeLock=await navigator.wakeLock.request('screen');}catch(e){console.log('Wake lock failed:',e);}}}
+function releaseWakeLock(){if(wakeLock){wakeLock.release();wakeLock=null;}}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&isMusician)requestWakeLock();});
 
-function attemptLogin() {
-  const pw = document.getElementById('login-password').value;
-  if (pw === MUSICIAN_PASSWORD) {
-    isMusician = true;
-    closeLoginModal();
-    showMusicianView();
-    toast('Welcome, musician! 🎸', 'success');
-    requestWakeLock();
-  } else {
-    document.getElementById('login-error').classList.remove('hidden');
-  }
-}
-
-// Enter key for login
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && !document.getElementById('login-modal').classList.contains('hidden')) {
-    attemptLogin();
-  }
-});
-
-function showMusicianView() {
-  document.getElementById('guest-view').classList.add('hidden');
-  document.getElementById('guest-footer').classList.add('hidden');
-  document.getElementById('musician-view').classList.remove('hidden');
-  document.getElementById('secret-login').classList.add('hidden');
-  // Re-render with musician controls
-  if (db) {
-    db.ref('requests').once('value', (snap) => {
-      renderMusicianQueue(snap.val() || {});
-    });
-  }
-  renderSetlist(currentSession);
-}
-
-function logoutMusician() {
-  isMusician = false;
-  releaseWakeLock();
-  document.getElementById('guest-view').classList.remove('hidden');
-  document.getElementById('guest-footer').classList.remove('hidden');
-  document.getElementById('musician-view').classList.add('hidden');
-  document.getElementById('secret-login').classList.remove('hidden');
-  toast('Logged out', 'info');
-}
-
-// ─── Wake Lock ───
-async function requestWakeLock() {
-  if ('wakeLock' in navigator) {
-    try {
-      wakeLock = await navigator.wakeLock.request('screen');
-      console.log('Wake lock acquired');
-      wakeLock.addEventListener('release', () => console.log('Wake lock released'));
-    } catch (e) {
-      console.log('Wake lock request failed:', e);
-    }
-  }
-}
-
-function releaseWakeLock() {
-  if (wakeLock) {
-    wakeLock.release();
-    wakeLock = null;
-  }
-}
-
-// Re-acquire wake lock when tab becomes visible again
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible' && isMusician) {
-    requestWakeLock();
-  }
-});
-
-// ─── Init ───
-document.addEventListener('DOMContentLoaded', () => {
-  initFirebase();
-  // If not configured, hide loading immediately
-  if (!isConfigured()) {
-    document.getElementById('loading-screen').classList.add('hidden');
-  }
-});
+document.addEventListener('DOMContentLoaded',()=>{initFirebase();if(!isConfigured())document.getElementById('loading-screen').classList.add('hidden');});
 </script>
 </body>
 </html>
