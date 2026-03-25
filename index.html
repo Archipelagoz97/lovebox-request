@@ -148,22 +148,85 @@ body::after {
   position: absolute;
   top: 8px;
   right: 8px;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   background: none;
   border: none;
   cursor: pointer;
-  opacity: 0.04;
+  opacity: 0.08;
   color: var(--gold-dim);
-  font-size: 14px;
+  font-size: 16px;
   border-radius: 50%;
   transition: opacity var(--transition);
   display: flex;
   align-items: center;
   justify-content: center;
+  -webkit-tap-highlight-color: transparent;
 }
-.header-secret:hover { opacity: 0.2; }
-.header-secret:active { opacity: 0.4; }
+.header-secret:hover { opacity: 0.25; }
+.header-secret:active { opacity: 0.5; }
+
+/* ─── SONG ROWS (multi-song) ─── */
+.song-row {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-bottom: 10px;
+  position: relative;
+  animation: fade-slide-in 0.3s ease;
+}
+.song-row-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.song-row-label {
+  font-size: 0.68rem;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+}
+.song-row-remove {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color var(--transition);
+}
+.song-row-remove:hover { color: var(--danger); }
+.song-row .form-input { margin-bottom: 6px; }
+.song-row .form-input:last-child { margin-bottom: 0; }
+
+.add-song-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-bottom: 14px;
+}
+.add-song-btn:hover { border-color: var(--gold-dim); color: var(--gold); background: var(--gold-glow); }
+.add-song-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* Songs in queue */
+.queue-songs-list { display: flex; flex-direction: column; gap: 2px; }
+.queue-songs-list .queue-song-item { display: flex; align-items: baseline; gap: 6px; }
+.queue-songs-list .queue-song-num { color: var(--text-muted); font-size: 0.7rem; min-width: 14px; }
 
 /* ─── BAND STATUS ─── */
 .band-status {
@@ -723,14 +786,19 @@ body::after {
           <label class="form-label">Nama Kamu</label>
           <input type="text" class="form-input" id="input-name" placeholder="Siapa nih?" maxlength="50">
         </div>
-        <div class="form-group">
-          <label class="form-label">Judul Lagu</label>
-          <input type="text" class="form-input" id="input-song" placeholder="Lagu apa yang mau didenger?" maxlength="100">
+
+        <div id="song-rows-container">
+          <div class="song-row" data-index="0">
+            <div class="song-row-header">
+              <span class="song-row-label">Lagu 1</span>
+            </div>
+            <input type="text" class="form-input song-title" placeholder="Judul lagu" maxlength="100">
+            <input type="text" class="form-input song-artist" placeholder="Artist (optional)" maxlength="80">
+          </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Artist <span class="optional">(optional)</span></label>
-          <input type="text" class="form-input" id="input-artist" placeholder="Siapa yang nyanyi?" maxlength="80">
-        </div>
+
+        <button class="add-song-btn" id="add-song-btn" onclick="addSongRow()">+ Tambah lagu lain <span style="opacity:0.5;font-size:0.7rem;">(max 3)</span></button>
+
         <div class="form-group">
           <label class="form-label">Dedication <span class="optional">(optional)</span></label>
           <textarea class="form-textarea" id="input-dedication" placeholder="Pesan spesial buat seseorang..." maxlength="200"></textarea>
@@ -989,15 +1057,60 @@ function clearBroadcast() {
   toast('Broadcast cleared', 'info');
 }
 
+// ─── Multi-Song Form ───
+let songRowCount = 1;
+
+function addSongRow() {
+  if (songRowCount >= 3) return;
+  songRowCount++;
+  const container = document.getElementById('song-rows-container');
+  const row = document.createElement('div');
+  row.className = 'song-row';
+  row.dataset.index = songRowCount - 1;
+  row.innerHTML = `
+    <div class="song-row-header">
+      <span class="song-row-label">Lagu ${songRowCount}</span>
+      <button class="song-row-remove" onclick="removeSongRow(this)">✕</button>
+    </div>
+    <input type="text" class="form-input song-title" placeholder="Judul lagu" maxlength="100">
+    <input type="text" class="form-input song-artist" placeholder="Artist (optional)" maxlength="80">
+  `;
+  container.appendChild(row);
+  if (songRowCount >= 3) {
+    document.getElementById('add-song-btn').disabled = true;
+  }
+  // Focus the new input
+  row.querySelector('.song-title').focus();
+}
+
+function removeSongRow(btn) {
+  btn.closest('.song-row').remove();
+  songRowCount--;
+  document.getElementById('add-song-btn').disabled = false;
+  // Re-label remaining rows
+  document.querySelectorAll('.song-row').forEach((row, i) => {
+    row.querySelector('.song-row-label').textContent = `Lagu ${i + 1}`;
+  });
+}
+
+function getSongs() {
+  const songs = [];
+  document.querySelectorAll('.song-row').forEach(row => {
+    const title = row.querySelector('.song-title').value.trim();
+    const artist = row.querySelector('.song-artist').value.trim();
+    if (title) songs.push({ song: title, artist: artist || '' });
+  });
+  return songs;
+}
+
 // ─── Guest Request ───
 function submitRequest() {
   const name = document.getElementById('input-name').value.trim();
-  const song = document.getElementById('input-song').value.trim();
-  const artist = document.getElementById('input-artist').value.trim();
+  const songs = getSongs();
   const dedication = document.getElementById('input-dedication').value.trim();
 
   if (!name) return toast('Isi nama kamu dulu!', 'error');
-  if (!song) return toast('Judul lagu wajib diisi!', 'error');
+  if (songs.length === 0) return toast('Minimal 1 judul lagu ya!', 'error');
 
   // Cooldown check
   const lastTime = parseInt(localStorage.getItem('lovebox_last_request') || '0');
@@ -1014,21 +1127,32 @@ function submitRequest() {
   btn.disabled = true;
   btn.textContent = 'Sending...';
 
-  const ref = db.ref('requests').push();
-  ref.set({
-    name: name,
-    song: song,
-    artist: artist || '',
-    dedication: dedication || '',
-    status: 'waiting',
-    timestamp: firebase.database.ServerValue.TIMESTAMP
-  }).then(() => {
+  // Push each song as a separate request (grouped by same name/dedication/timestamp)
+  const ts = firebase.database.ServerValue.TIMESTAMP;
+  const batchId = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const updates = {};
+  songs.forEach((s, i) => {
+    const key = db.ref('requests').push().key;
+    updates[`requests/${key}`] = {
+      name: name,
+      song: s.song,
+      artist: s.artist,
+      dedication: i === 0 ? (dedication || '') : '',
+      status: 'waiting',
+      timestamp: ts,
+      batchId: batchId
+    };
+  });
+
+  db.ref().update(updates).then(() => {
     localStorage.setItem('lovebox_last_request', String(Date.now()));
     document.getElementById('form-state').classList.add('hidden');
     document.getElementById('success-state').classList.remove('hidden');
+    const songWord = songs.length > 1 ? `${songs.length} lagu` : 'Lagu';
+    document.querySelector('.success-sub').textContent = `${songWord} kamu udah masuk antrian. Stay tuned!`;
     btn.disabled = false;
     btn.textContent = '✦ Kirim Request';
-    toast('Request terkirim! 🎶', 'success');
+    toast(`${songs.length} request terkirim! 🎶`, 'success');
   }).catch((e) => {
     console.error(e);
     btn.disabled = false;
@@ -1038,8 +1162,19 @@ function submitRequest() {
 }
 
 function resetForm() {
-  document.getElementById('input-song').value = '';
-  document.getElementById('input-artist').value = '';
+  // Reset to single song row
+  const container = document.getElementById('song-rows-container');
+  container.innerHTML = `
+    <div class="song-row" data-index="0">
+      <div class="song-row-header">
+        <span class="song-row-label">Lagu 1</span>
+      </div>
+      <input type="text" class="form-input song-title" placeholder="Judul lagu" maxlength="100">
+      <input type="text" class="form-input song-artist" placeholder="Artist (optional)" maxlength="80">
+    </div>
+  `;
+  songRowCount = 1;
+  document.getElementById('add-song-btn').disabled = false;
   document.getElementById('input-dedication').value = '';
   document.getElementById('form-state').classList.remove('hidden');
   document.getElementById('success-state').classList.add('hidden');
